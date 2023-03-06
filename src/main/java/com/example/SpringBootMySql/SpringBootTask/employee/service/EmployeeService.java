@@ -11,32 +11,34 @@ import java.util.Optional;
 public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
-
-    public EmployeeModel getEmployeeModelById(Integer id) {
-        Optional<EmployeeModel> checkEmployee =employeeRepository.findById(id);
-        if (checkEmployee.isPresent())
-            return checkEmployee.get();
-        return null;
-    }
     public EmployeeModel saveEmployee(EmployeeModel employee) {
 
         return employeeRepository.save(employee);
     }
-
     public List<EmployeeModel> findAllEmployee() {
         return employeeRepository.findAll();
     }
 
+    public Optional<EmployeeModel> getEmployeeModelById(Integer id) {
+
+            return employeeRepository.findById(id);
+
+    }
+
+    public String deleteAllEmployee() {
+        employeeRepository.deleteAll();
+        return "All Learners Deleted";
+    }
     public EmployeeModel updateEmployee(Integer id, EmployeeModel employeeDetails) {
         if (!employeeRepository.existsById(id)) {
             return null;
         }
-        Optional<EmployeeModel> user = employeeRepository.findById(id);
-        EmployeeModel new_Employee = user.get();
-
-        new_Employee.setFirstName(employeeDetails.getFirstName());
-        new_Employee.setEmailId(employeeDetails.getEmailId());
-        return employeeRepository.save(employeeDetails);
+        Optional<EmployeeModel> employee= employeeRepository.findById(id);
+        EmployeeModel new_employee = employee.get();
+        new_employee.setFirstName(employeeDetails.getFirstName());
+        new_employee.setEmailId(employeeDetails.getEmailId());
+        return employeeRepository.save(new_employee);
     }
+
 
 }
